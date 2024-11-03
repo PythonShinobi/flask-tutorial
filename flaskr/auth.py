@@ -95,12 +95,17 @@ def load_logged_in_user():
 
 
 def login_required(view):
+    # This line ensures that the decorated function (wrapped_view) retains the 
+    # original function's metadata, like its name and docstring. It’s a best practice 
+    # when creating decorators in Python, as it helps with debugging and documentation.
     @functools.wraps(view)
+    # wrapped_view is the function that actually gets called in place of the original view function.
+    # It accepts **kwargs to allow the original view function to receive any arguments it might need.
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for('auth.login'))
 
-        return view(**kwargs)
+        return view(**kwargs)  # Execute the original view function (view) and returns its response.
 
     return wrapped_view
 
