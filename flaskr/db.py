@@ -10,6 +10,14 @@ def init_app(app):
     # Adds a new command that can be called with the flask command.
     app.cli.add_command(init_db_command)
 
+# Defines a command line command called init-db that calls the init_db function 
+# and shows a success message to the user.
+@click.command('init-db')
+def init_db_command():
+    """Clear the existing data and create new tables."""
+    init_db()
+    click.echo('Initialized the database.')
+
 
 def init_db():
     db = get_db()
@@ -33,15 +41,6 @@ def get_db():
         g.db.row_factory = sqlite3.Row
 
     return g.db
-
-
-# Defines a command line command called init-db that calls the init_db function 
-# and shows a success message to the user.
-@click.command('init-db')
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
 
 
 def close_db(e=None):
